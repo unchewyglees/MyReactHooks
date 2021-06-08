@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function useAnchorEl(params:IUseAnchorElParams): IUseAnchorElProps {
+export default function useAnchorEl(params: IUseAnchorElParams): IUseAnchorElProps {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | EventTarget | null>(null);
 
   const onClick = (event: React.MouseEvent<HTMLElement> | React.FocusEvent<HTMLElement>) => {
@@ -9,7 +9,12 @@ export default function useAnchorEl(params:IUseAnchorElParams): IUseAnchorElProp
       params.onClick(event);
     }
   };
-  const onClose = () => { setAnchorEl(null); };
+  const onClose = () => {
+    setAnchorEl(null);
+    if (params && params.onClose) {
+      params.onClose();
+    }
+  };
 
   return {
     anchorEl,
@@ -18,11 +23,12 @@ export default function useAnchorEl(params:IUseAnchorElParams): IUseAnchorElProp
   };
 }
 
-interface IUseAnchorElParams {
+export interface IUseAnchorElParams {
   onClick?(event: React.MouseEvent<HTMLElement> | React.FocusEvent<HTMLElement>): void;
+  onClose?(): void;
 }
 
-interface IUseAnchorElProps {
+export interface IUseAnchorElProps {
   anchorEl: HTMLElement | EventTarget | null;
   isAnchored: boolean;
   onClick(event: React.MouseEvent<HTMLElement> | React.FocusEvent<HTMLElement>): void;
