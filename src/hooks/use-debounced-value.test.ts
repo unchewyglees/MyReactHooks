@@ -7,7 +7,9 @@ const testValue = 'test value';
 beforeEach(() => {
   jest.useFakeTimers();
 });
+
 afterEach(() => {
+  jest.runOnlyPendingTimers();
   jest.useRealTimers();
 });
 
